@@ -129,9 +129,12 @@ POLICY_DOC=$(cat <<EOF
         "iam:CreateGroup",
         "iam:GetGroup",
         "iam:DeleteGroup",
+        "iam:AddUserToGroup",
+        "iam:RemoveUserFromGroup",
         "iam:AttachGroupPolicy",
         "iam:DetachGroupPolicy",
-        "iam:ListAttachedGroupPolicies"
+        "iam:ListAttachedGroupPolicies",
+        "iam:ListGroupsForUser"
       ],
       "Resource": "arn:aws:iam::${ACCOUNT_ID}:group/${BUCKET_PREFIX}-*"
     },
