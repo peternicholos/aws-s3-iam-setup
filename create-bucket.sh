@@ -113,9 +113,9 @@ echo ""
 # This policy grants the minimum permissions a backup agent needs:
 #
 # ListAllMyBuckets:
-#   Needed for some backup tools to enumerate buckets. Only exposes
-#   bucket names, not contents. Cannot be scoped to specific buckets
-#   (AWS API limitation).
+#   REMOVED — bucket users cannot see any bucket names. Backup software
+#   should be configured with the bucket name directly. This prevents
+#   users from discovering other tenants' bucket names.
 #
 # ListBucket:
 #   List objects in this bucket only. Needed for incremental backups
@@ -152,12 +152,6 @@ POLICY_DOC=$(cat <<EOF
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "ListBuckets",
-      "Effect": "Allow",
-      "Action": "s3:ListAllMyBuckets",
-      "Resource": "arn:aws:s3:::*"
-    },
-    {
       "Sid": "BucketLevelAccess",
       "Effect": "Allow",
       "Action": [
@@ -183,7 +177,7 @@ POLICY_DOC=$(cat <<EOF
     {
       "Sid": "DenyOtherBuckets",
       "Effect": "Deny",
-      "NotAction": "s3:ListAllMyBuckets",
+      "Action": "s3:*",
       "NotResource": [
         "arn:aws:s3:::${BUCKET_NAME}",
         "arn:aws:s3:::${BUCKET_NAME}/*"
